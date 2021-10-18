@@ -9,7 +9,7 @@ namespace PropertyMaster.Models
     {
         public int id { get; set; }
         public int landAcqId { get; set; }
-        public double paidAmount{ get; set; }
+        public double amount{ get; set; }
         public string details{ get; set; }
         public DateTime datetime{ get; set; }
     }

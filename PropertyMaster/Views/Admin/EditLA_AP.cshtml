@@ -20,8 +20,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="paidAmount">Paid Amount</label>
-                    <input type="text" class="form-control" id="paidAmount" />
+                    <label for="amount">Paid Amount</label>
+                    <input type="text" class="form-control" id="amount" />
                 </div>
 
                 <div class="form-group">
@@ -87,7 +87,7 @@
             success: function (result) {
                 $('#id').val(result.id);
                 $('#landAcqId').val(result.landAcqId);
-                $('#paidAmount').val(result.paidAmount);
+                $('#amount').val(result.amount);
                 $('#details').html(result.details);
 
                 $('#deleted').val(result.deleted);
@@ -112,7 +112,7 @@
         var obj = {
             id: $('#id').val(),
             landAcqId: $('#landAcqId').val(),
-            paidAmount: $('#paidAmount').val(),
+            amount: $('#amount').val(),
             details: $('#details').val(),
             datetime: $('#datetime').val(),
             deleted: $('#deleted').val() == 0 ? false : true
@@ -125,7 +125,7 @@
             dataType: "json",
             success: function (result) {
                 alert("Record is updated.");
-                window.location.href = '/Admin/DetailsLA/' + obj.landAcqId;
+                window.location.href = '/Admin/DetailsLA?id=' + obj.landAcqId;
             },
             error: function (errormessage) {
                 alert(errormessage.responseText);
@@ -134,8 +134,8 @@
     }
     function validate() {
         var isValid = true;
-        if ($('#paidAmount').val().trim() == "") {
-            $('#paidAmount').css('border-color', 'Red');
+        if ($('#amount').val().trim() == "") {
+            $('#amount').css('border-color', 'Red');
             isValid = false;
         }
         return isValid;

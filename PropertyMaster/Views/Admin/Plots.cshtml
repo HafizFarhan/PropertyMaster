@@ -7,7 +7,7 @@
 
 <div class="row">
     <div class="col-md-6">
-        <h2>Plots</h2>
+        <h2>Plots Panel</h2>
     </div>
     <div class="col-md-6 pull-right">
         @Html.ActionLink("Create Plot", "CreatePlot", null, new { @class = "btn btn-primry" })
@@ -25,13 +25,13 @@
     <tbody id="acountTblDiv"></tbody>
 </table>
 <script>
-    window.onload = function () { loadPlots(); };
-    function getUrlParameter(name) {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        var results = regex.exec(location.search);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    };
+    window.onload = function () { loadLA(); };
+    //function getUrlParameter(name) {
+    //    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    //    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    //    var results = regex.exec(location.search);
+    //    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    //};
     function loadLA() {
 
         var projId =getUserTypeValue(getUrlParameter('id'));

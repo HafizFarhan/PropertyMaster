@@ -266,8 +266,8 @@ namespace PropertyMaster.Controllers
             var org = context.LandAcqAP.Where(m => m.id == obj.id).FirstOrDefault();
             if (org != null)
             {
-                obj = org;
-                obj.datetime = org.datetime;
+                //obj = org;
+                obj.datetime =DateTime.Now;
                 context.Entry(org).CurrentValues.SetValues(obj);
             }
             context.SaveChanges();
@@ -283,7 +283,56 @@ namespace PropertyMaster.Controllers
             return Json(APs, JsonRequestBehavior.AllowGet);
         }
 
-        
+
+        #endregion
+
+        #region Land Acquisition ARs
+        public ActionResult LA_AR(int id)
+        {
+            return View();
+        }
+
+        public JsonResult CreateLA_AR(LandAcqAR obj)
+        {
+            obj.datetime = DateTime.Now;
+            context.LandAcqAR.Add(obj);
+            context.SaveChanges();
+
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult EditLA_AR(int id)
+        {
+            return View();
+        }
+        public JsonResult GetbyIDLA_ARs(int ID)
+        {
+            var obj = context.LandAcqAR.Where(m => m.landAcqId == ID).OrderByDescending(m=>m.datetime).FirstOrDefault();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult UpdateLA_ARs(LandAcqAR obj)
+        {
+            var org = context.LandAcqAR.Where(m => m.id == obj.id).FirstOrDefault();
+            if (org != null)
+            {
+                obj = org;
+                obj.datetime = org.datetime;
+                context.Entry(org).CurrentValues.SetValues(obj);
+            }
+            context.SaveChanges();
+
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult LoadLA_ARs(int id)
+        {
+            var APs = context.LandAcqAR.Where(p => p.landAcqId == id).ToList();
+
+            return Json(APs, JsonRequestBehavior.AllowGet);
+        }
+
+
         #endregion
 
         #region Plot

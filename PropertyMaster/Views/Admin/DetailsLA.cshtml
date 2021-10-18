@@ -5,78 +5,103 @@
 }
 
 
-<div class="row">
-    <div class="col-md-8">
-        <div class="card">
+    <div class="row">
+        <div class="col-md-12">
             <div class="card-header card-header-primary">
-                <h4 class="card-title" id="title">Land Acquisition</h4>
-                <p class="card-category" id="details"></p>
+                <input type="hidden" class="form-control" id="id" />
+                <h2 class="card-title" id="title">Land Acquisition</h2>
+                <p class="card-category" id="det"></p>
             </div>
-            <div class="card-body">
-
-                <div class="form-group">
-                    <label for="projId">Select Project</label>
-                    <select id="projId" style="height:55px;" class="form-control">  </select>
-                </div>
-                <div class="form-group">
-                    <label for="name">Details</label>
-                    <input type="text" class="form-control" id="details" />
-                </div>
-
-                <div class="form-group">
-                    <label for="details">Saleable Amount</label>
-                    <input type="text" class="form-control" id="saleableamount" />
-
-                </div>
-
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <button type="button" class="btn btn-primary  pull-right" id="btnUpdate" onclick="Create();">Create</button>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="datetime">Date Time</label>
+                        <input type="text" class="form-control" id="datetime" />
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card card-profile">
-            <div class="card-avatar">
-                <a href="javascript:;">
-                    <img class="img" src="~/assets/img/avator.jpg" />
-                </a>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="details">Details</label>
+                        <input type="text" class="form-control" id="details" />
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <h6 class="card-category text-gray"><span id="design"></span></h6>
-                <h4 class="card-title"><span id="profile"></span></h4>
-                <p class="card-description">
-                    Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
-                </p>
-                <a href="javascript:;" class="btn btn-primary btn-round ">Follow</a>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="amount">Saleable Amount</label>
+                        <input type="text" class="form-control" id="amount" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                            <button type="button" class="btn btn-primary btn-xs" id="btnUpdate" onclick="CreateAR();">Add Payable Amount</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 <table id="acountTbl" class="table table-striped table-bordered" style="width:100%">
     <thead>
         <tr>
-            <th>Sr. No</th>
-            <th>Name</th>
+            <th>Date</th>
+            <th>Details</th>
+            <th>Amount</th>
             <th></th>
+        </tr>
+        <tr>
+            <th></th>
+            <th><input type="text" class="form-control" id="amountAP" /></th>
+            <th><input type="text" class="form-control" id="detailsAP" /></th>
+            <th>
+                <button type="button" class="btn btn-primary btn-xs " id="btnUpdate" onclick="CreateAP();">Add Payment</button>
+
+            </th>
         </tr>
     </thead>
     <tbody id="acountTblDiv"></tbody>
 </table>
 <script type="text/javascript">
     window.onload = function () {
+        loadProjects();
         loadLA();
+        loadLA_AR();
+        LA_APList();
     };
 
-    function getUrlParameter(name) {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        var results = regex.exec(location.search);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    };
+    
+
+    function loadProjects() {
+        $.ajax({
+            url: "/Admin/ProjectsList",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (objs) {
+                var html = '';
+                $.each(objs, function (key, item) {
+
+                    html += '<option style="text-align:right"  value="' + item.id + '"> ' + item.name + '</option>';
+                });
+                debugger;
+                $('#projId').append(html);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
 
     function loadLA() {
         $.ajax({
@@ -85,9 +110,10 @@
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
-
-                $("#name").html=result.name;
-                $("#details").html=result.details;
+                debugger;
+                $("#id").val(result.id);
+                document.getElementById("title").innerHTML=result.name;
+                document.getElementById("det").innerHTML=result.details;
             },
             error: function (errormessage) {
                 alert(errormessage.responseText);
@@ -95,7 +121,73 @@
         });
     }
 
+    function loadLA_AR() {
+        $.ajax({
+            url: "/Admin/GetbyIDLA_ARs/" + getUrlParameter('id'),
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                $("#datetime").val(TimeTrickToReadableDatetime(result.datetime));
+                $("#details").val(result.details);
+                $("#amount").val(result.amount);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
 
+    function CreateAP() {
+        if (validate() == false)
+            return false;
+
+        var obj = {
+            landAcqId: $('#id').val(),
+            amount: $('#amount').val(),
+            details: $('#details').val()
+        };
+        $.ajax({
+            url: "/Admin/CreateLA_AP",
+            data: JSON.stringify(obj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                alert("Record is created.");
+                window.location.href = '/Admin/DetailsLA?id=' + obj.landAcqId;
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+       function CreateAR() {
+        if (validate() == false)
+            return false;
+
+        var obj = {
+            landAcqId: $('#id').val(),
+            amount: $('#amount').val(),
+            details: $('#details').val()
+        };
+        $.ajax({
+            url: "/Admin/CreateLA_AR",
+            data: JSON.stringify(obj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                alert("Record is created.");
+                window.location.href = '/Admin/DetailsLA?id=' + obj.landAcqId;
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
     function LA_APList() {
         $.ajax({
             url: "/admin/LoadLA_APs/" + getUrlParameter('id'),
@@ -104,14 +196,12 @@
             dataType: "json",
             success: function (result) {
                  var html = '',count=1;
-                  $.each(result, function (key, item) {
-
-                    html += '<tr "> ';
-                    html += ' <td>' + count + '</td>';
-                    html += ' <td>' + item.paidAmount + '</td>';
-                    html += ' <td>' + item.details + '</td>';
-                    html += ' <td>' + item.datetime + '</td>';
-                    html += ' <td><a target="_blank" href="/Admin/EditLA_AP/?id=' + item.id + '" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a> </td>';
+                $.each(result, function (key, item) {
+                      html += '<tr "> ';
+                      html += ' <td>' +  TimeTrickToReadableDatetime(item.datetime) + '</td>';
+                      html += ' <td>' + item.details + '</td>';
+                      html += ' <td>' + item.amount + '</td>';
+                    html += ' <td><a target="_blank" href="/Admin/EditLA_AP/?id=' + item.id + '" class="btn btn-primary btn-xs"> Edit</a> </td>';
                     html += ' </tr>';
                     count++;
                 });
@@ -122,10 +212,15 @@
             }
         });
     }
+
     function validate() {
         var isValid = true;
         if ($('#details').val().trim() == "") {
             $('#details').css('border-color', 'Red');
+            isValid = false;
+        }
+        if ($('#amount').val().trim() == "") {
+            $('#amount').css('border-color', 'Red');
             isValid = false;
         }
         return isValid;
