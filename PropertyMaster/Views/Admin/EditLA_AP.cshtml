@@ -1,0 +1,145 @@
+﻿
+@{
+    ViewBag.Title = "EditLA AP";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title">Edit LA AP</h4>
+                @*<p class="card-category">Complete your profile</p>*@
+            </div>
+            <div class="card-body">
+
+                <div class="form-group">
+                    <input type="hidden" class="form-control" id="id" />
+                    <input type="hidden" class="form-control" id="landAcqId" />
+                    <input type="hidden" class="form-control" id="datetime" />
+                </div>
+
+                <div class="form-group">
+                    <label for="paidAmount">Paid Amount</label>
+                    <input type="text" class="form-control" id="paidAmount" />
+                </div>
+
+                <div class="form-group">
+                    <label for="details">Details</label>
+                    <textarea type="text" class="form-control" id="details" cols="4">  </textarea>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="deleted">Deactive LA</label>
+                    <select id="deleted" class="form-control">
+                        <option value="1">Active</option>
+                        <option value="0">Deactive</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="button" class="btn btn-primary  pull-right" id="btnUpdate" onclick="Update();">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-profile">
+            <div class="card-avatar">
+                <a href="javascript:;">
+                    <img class="img" src="~/assets/img/avator.jpg" />
+                </a>
+            </div>
+            <div class="card-body">
+                <h6 class="card-category text-gray"><span id="design"></span></h6>
+                <h4 class="card-title"><span id="profile"></span></h4>
+                <p class="card-description">
+                    Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+                </p>
+                <a href="javascript:;" class="btn btn-primary btn-round ">Follow</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    window.onload = function () {
+        getbyID(getUrlParameter('id'));
+
+    };
+
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    };
+
+    function getbyID(id) {
+        $.ajax({
+            url: "/Admin/GetbyIDLA_APs/" + id,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $('#id').val(result.id);
+                $('#landAcqId').val(result.landAcqId);
+                $('#paidAmount').val(result.paidAmount);
+                $('#details').html(result.details);
+
+                $('#deleted').val(result.deleted);
+                $('#datetime').val(result.datetime);
+                //$('#updatedAt').val(result.updatedAt);
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        return false;
+    }
+
+
+
+    function Update() {
+
+        if (validate() == false)
+            return false;
+
+        var obj = {
+            id: $('#id').val(),
+            landAcqId: $('#landAcqId').val(),
+            paidAmount: $('#paidAmount').val(),
+            details: $('#details').val(),
+            datetime: $('#datetime').val(),
+            deleted: $('#deleted').val() == 0 ? false : true
+        };
+        $.ajax({
+            url: "/Admin/UpdateLA_APs",
+            data: JSON.stringify(obj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                alert("Record is updated.");
+                window.location.href = '/Admin/DetailsLA/' + obj.landAcqId;
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    function validate() {
+        var isValid = true;
+        if ($('#paidAmount').val().trim() == "") {
+            $('#paidAmount').css('border-color', 'Red');
+            isValid = false;
+        }
+        return isValid;
+    }
+</script>
+
+

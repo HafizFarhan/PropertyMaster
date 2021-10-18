@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "LandAcquisition";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Land Acquisition-LA Panel</h2>
+    </div>
+    <div class="col-md-6 pull-right">
+        @Html.ActionLink("Create LA", "CreateLA", null, new { @class = "btn btn-primry" })
+    </div>
+</div>
+<table id="acountTbl" class="table table-striped table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th>Sr. No</th>
+            <th>Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="acountTblDiv"></tbody>
+</table>
+<script>
+    window.onload = function () { loadLA(); };
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    };
+    function loadLA() {
+
+        var projId =getUrlParameter('id');
+        $.ajax({
+            url: "/Admin/LAList",
+            type: "GET",
+            data: { projId: projId},
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (comps) {
+                var html = '',count=1;
+                $.each(comps, function (key, item) {
+
+                    html += '<tr "> ';
+                    html += ' <td>' + count + '</td>';
+                    html += ' <td>' + item.name + '</td>';
+                    html += ' <td><a target="_blank" href="/Admin/EditLA/?id=' + item.id + '" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a> | <a target="_blank" href="/Admin/DetailsLA/?id=' + item.id + '" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Details</a> </td>';
+                    html += ' </tr>';
+                    count++;
+                });
+                $('#acountTblDiv').html(html);
+               // $('#acountTbl').DataTable();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+</script>
+

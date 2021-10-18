@@ -1,0 +1,119 @@
+﻿
+@{
+    ViewBag.Title = "LA_AP";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title">Create Land Acquisition AP</h4>
+                @*<p class="card-category">Complete your profile</p>*@
+                <input type="hidden" class="form-control" id="landAcqId" />
+            </div>
+            <div class="card-body">
+
+                <div class="form-group">
+                    <label for="title">Land Acquisition</label>
+                    <input type="text" class="form-control" id="title" disabled/>
+                </div>
+                <div class="form-group">
+                    <label for="paidAmount">Paid Amount</label>
+                    <input type="text" class="form-control" id="paidAmount" />
+                </div>
+
+                <div class="form-group">
+                    <label for="details">Details</label>
+                    <textarea type="text" class="form-control" id="details" cols="4">  </textarea>
+
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="button" class="btn btn-primary  pull-right" id="btnUpdate" onclick="Create();">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-profile">
+            <div class="card-avatar">
+                <a href="javascript:;">
+                    <img class="img" src="~/assets/img/avator.jpg" />
+                </a>
+            </div>
+            <div class="card-body">
+                <h6 class="card-category text-gray"><span id="design"></span></h6>
+                <h4 class="card-title"><span id="profile"></span></h4>
+                <p class="card-description">
+                    Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+                </p>
+                <a href="javascript:;" class="btn btn-primary btn-round ">Follow</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    window.onload = function () {
+        loadLA();
+    };
+
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    };
+
+     function loadLA() {
+         $.ajax({
+             url: "/Admin/GetbyIDLA/" + getUrlParameter('id'),
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (obj) {
+                $('#landAcqId').val(obj.landAcqId);
+                $('#title').val(obj.name);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function Create() {
+        if (validate() == false)
+            return false;
+
+        var obj = {
+            landAcqId: $('#landAcqId').val(),
+            paidAmount: $('#paidAmount').val(),
+            details: $('#details').val()
+        };
+        $.ajax({
+            url: "/Admin/CreateLA_AP",
+            data: JSON.stringify(obj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                alert("Record is created.");
+                window.location.href = '/Admin/DetailsLA?id=' + obj.landAcqId;
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    function validate() {
+        var isValid = true;
+        if ($('#paidAmount').val().trim() == "") {
+            $('#paidAmount').css('border-color', 'Red');
+            isValid = false;
+        }
+        return isValid;
+    }
+</script>
+

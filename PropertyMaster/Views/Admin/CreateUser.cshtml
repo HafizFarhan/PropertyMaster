@@ -1,0 +1,163 @@
+﻿
+@{
+    ViewBag.Title = "Create User";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title">Create User</h4>
+                @*<p class="card-category">Complete your profile</p>*@
+            </div>
+            <div class="card-body">
+
+                <div class="form-group">
+                    <label for="usertype">Select User Type</label>
+                    <select id="usertype" style="height:55px;" class="form-control">
+                        <option value="0">Admin</option>
+                        <option value="1">Customer</option>
+                        <option value="2">Acquisition</option>
+                        <option value="3">Dealer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" />
+                </div>
+
+                <div class="form-group">
+                    <label for="nic">NIC</label>
+                    <input type="text" class="form-control" id="nic" />
+
+                </div>
+                <div class="form-group">
+                    <label for="cell">Cell</label>
+                    <input type="text" class="form-control" id="cell" />
+
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" class="form-control" id="email" />
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control" id="address" />
+                </div>
+                <div class="form-group">
+                    <label for="province">Province/State</label>
+                    <input type="text" class="form-control" id="province" />
+                </div>
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" class="form-control" id="city" />
+                </div>
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <input type="text" class="form-control" id="country"  value="Pakistan" disabled/>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="button" class="btn btn-primary  pull-right" id="btnUpdate" onclick="Create();">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-profile">
+            <div class="card-avatar">
+                <a href="javascript:;">
+                    <img class="img" src="~/assets/img/avator.jpg" />
+                </a>
+            </div>
+            <div class="card-body">
+                <h6 class="card-category text-gray"><span id="design"></span></h6>
+                <h4 class="card-title"><span id="profile"></span></h4>
+                <p class="card-description">
+                    Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+                </p>
+                <a href="javascript:;" class="btn btn-primary btn-round ">Follow</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    window.onload = function () {
+       //loadProjects();
+    };
+
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    };
+
+    //function loadProjects() {
+    //    $.ajax({
+    //        url: "/Admin/ProjectsList",
+    //        type: "GET",
+    //        contentType: "application/json;charset=utf-8",
+    //        dataType: "json",
+    //        success: function (objs) {
+    //            var html = '';
+    //            $.each(objs, function (key, item) {
+
+    //                html += '<option style="text-align:right"  value="' + item.id + '"> ' + item.name + '</option>';
+    //            });
+    //            debugger;
+    //            $('#projectId').append(html);
+    //        },
+    //        error: function (errormessage) {
+    //            alert(errormessage.responseText);
+    //        }
+    //    });
+    //}
+
+    function Create() {
+        if (validate() == false)
+            return false;
+
+        var obj = {
+            usertype: $('#usertype').val(),
+            name: $('#name').val(),
+            nic: $('#nic').val(),
+            cell: $('#cell').val(),
+            email: $('#email').val(),
+            address: $('#address').val(),
+            province: $('#province').val(),
+            city: $('#city').val(),
+            country: $('#country').val()
+        };
+        $.ajax({
+            url: "/Admin/NewUser",
+            data: JSON.stringify(obj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                alert("Record is created.");
+                window.location.href = '/Admin/Users?type=' + obj.usertype;
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    function validate() {
+        var isValid = true;
+        if ($('#name').val().trim() == "") {
+            $('#name').css('border-color', 'Red');
+            isValid = false;
+        }
+        return isValid;
+    }
+</script>
+
+
