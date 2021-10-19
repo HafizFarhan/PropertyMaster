@@ -5,18 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Admin Panel</title>
     <link rel="shortcut icon" href="~/publicAssets/images/icondark.png">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href="~/assets/css/googlefonts.css" rel="stylesheet" />
+    <link href="~/assets/css/fa.css" rel="stylesheet" />
+    @*<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">*@
     <!-- CSS Files -->
     <link href="~/assets/css/material-dashboard.css" rel="stylesheet" />
     <link href="~/assets/demo/demo.css" rel="stylesheet" />
+   @*font-awesome*@
+    <link href="~/assets/fontawesome/css/solid.css" rel="stylesheet" />
+    <link href="~/assets/fontawesome/css/brands.css" rel="stylesheet" />
+    <link href="~/assets/fontawesome/css/fontawesome.css" rel="stylesheet" />
+
 </head>
 <body>
     <div class="wrapper ">
         <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
             <div class="logo">
                 <a href="#" class="simple-text logo-normal">
-                   Admin Panel
+                    Admin Panel
                 </a>
             </div>
             <div class="sidebar-wrapper">
@@ -28,11 +35,11 @@
                         </a>
                     </li>
                     @*<li class="nav-item ">
-            <a class="nav-link" href="#">
-                <i class="material-icons"></i>
-                <p>User Profile</p>
-            </a>
-        </li>*@
+                        <a class="nav-link" href="#">
+                            <i class="material-icons"></i>
+                            <p>User Profile</p>
+                        </a>
+                    </li>*@
                     <li class="nav-item ">
                         <a class="nav-link" href="~/Admin/Projects">
                             <i class="material-icons"></i>
@@ -49,6 +56,12 @@
                         <a class="nav-link" href="~/Admin/LandAcquisition?id=1">
                             <i class="material-icons"></i>
                             <p>Land Acquisitions</p>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="~/Admin/Plots">
+                            <i class="material-icons"></i>
+                            <p>Plots</p>
                         </a>
                     </li>
                 </ul>
@@ -71,8 +84,8 @@
 
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                    <a class="nav-link" style="font-size:20px" href="@Url.Action("Index", "Home")">Go to website</a>
-                                
+                                <a class="nav-link" style="font-size:20px" href="@Url.Action("Index", "Home")">Go to website</a>
+
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -92,6 +105,7 @@
                     </div>
                 </div>
             </nav>
+
             <!-- End Navbar -->
             <div class="content">
                 <div class="container-fluid">
@@ -99,6 +113,8 @@
                     <hr />
                 </div>
             </div>
+        </div>
+    </div>
             <script src="~/Scripts/userScirpts/shared.js"></script>
             <!--   Core JS Files   -->
             <script src="~/assets/js/core/jquery.min.js"></script>
@@ -130,12 +146,12 @@
             <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
             <script src="~/assets/js/plugins/nouislider.min.js"></script>
             <!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support SweetAlert -->
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+            @*<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>*@
             @*<script src="~/assets/js/core.js"></script>*@
             <!-- Library for adding dinamically elements -->
             <script src="~/assets/js/plugins/arrive.min.js"></script>
             <!--  Google Maps Plugin    -->
-            <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+           @* <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>*@
             <!-- Chartist JS -->
             <script src="~/assets/js/plugins/chartist.min.js"></script>
             <!--  Notifications Plugin    -->
@@ -323,5 +339,8 @@
                 });
             </script>
             <script src="~/Scripts/userscripts/common.js"></script>
-</body>
+
+            
+            
+            </body>
 </html>

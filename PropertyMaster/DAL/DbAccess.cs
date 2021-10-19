@@ -13,6 +13,8 @@ namespace PropertyMaster.DAL
         public DbSet<User> Users { get; set; }
         public DbSet<LandAcquisition> LandAcquisitions { get; set; }
         public DbSet<Plot> Plots { get; set; }
+        public DbSet<PlotEntry> PlotEntries { get; set; }
+        public DbSet<PlotSale> PlotSales { get; set; }
         public DbSet<LandAcqAP> LandAcqAP { get; set; }
         public DbSet<LandAcqAR> LandAcqAR { get; set; }
     }
