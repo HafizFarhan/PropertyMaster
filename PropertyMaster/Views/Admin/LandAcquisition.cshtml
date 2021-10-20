@@ -4,10 +4,11 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-
+<h2>Land Acquisition-LA Panel</h2>
 <div class="row">
+
     <div class="col-md-6">
-        <h2>Land Acquisition-LA Panel</h2>
+		<select id="projId" style="height:55px;" class="form-control" onchange="loadLA()">  </select>
     </div>
     <div class="col-md-6 pull-right">
         @Html.ActionLink("Create LA", "CreateLA", null, new { @class = "btn btn-primry" })
@@ -18,22 +19,93 @@
         <tr>
             <th>Sr. No</th>
             <th>Name</th>
+			<th>Debit</th>
+			<th>Credit</th>
+			<th>Balance</th>
             <th></th>
         </tr>
     </thead>
     <tbody id="acountTblDiv"></tbody>
 </table>
 <script>
-    window.onload = function () { loadLA(); };
+    window.onload = function () { loadProjects(); };
     function getUrlParameter(name) {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
         var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
         var results = regex.exec(location.search);
         return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     };
-    function loadLA() {
+	function loadProjects() {
+        $.ajax({
+            url: "/Admin/ProjectsList",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (objs) {
+                var html = '';
+                $.each(objs, function (key, item) {
+                    html += '<option   value="' + item.id + '"> ' + item.name + '</option>';
+                });
+                $('#projId').append(html);
+				loadLA();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+	function validateEntry() {
+        var isValid = true;
 
-        var projId =getUrlParameter('id');
+		if ($('#details').val().trim() == "") {
+            $('#details').css('border-color', 'Red');
+            isValid = false;
+        }
+        if ($('#debit').val().trim() == "") {
+            $('#debit').css('border-color', 'Red');
+            isValid = false;
+        }
+		if ($('#credit').val().trim() == "") {
+            $('#debit').css('border-color', 'Red');
+            isValid = false;
+        }
+
+        //if ($('#debit').val().trim() == "" || $('#credit').val().trim() == "") {
+        //    $('#debit').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+
+        return isValid;
+    }
+	function insertentry() {
+        var res = validateEntry();
+        if (res == false) {
+            return false;
+        }
+
+        var obj = {
+            projId :document.getElementById("projId").value,
+            name: $('#details').val(),
+            debit: $('#debit').val(),
+            credit: $('#credit').val()
+        };
+        $.ajax({
+            url: "/Admin/CreateLandAcq",
+            data: JSON.stringify(obj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                alert("Record is updated.");
+                loadLA();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    function loadLA() {
+        var projId =document.getElementById("projId").value;
         $.ajax({
             url: "/Admin/LAList",
             type: "GET",
@@ -42,11 +114,25 @@
             dataType: "json",
             success: function (comps) {
                 var html = '',count=1;
+				var Db = 0, Cr = 0;
+                $('#ly').html('');
+                html += '<tr>';
+                html += '<td>0</td>';
+                //html += '<td> <input type="date" id="datetime" class="form-control"/></td>';
+                html += '<td> <input type="text" id="details" class="form-control"/></td>';
+                html += '<td> <input type="number" id="debit"  value="0" class="form-control"/></td>';
+                html += '<td> <input type="number" id="credit"  value="0" class="form-control"/></td>';
+                html += '<td> - </td>';
+                html += '<td> <button type="button" class="btn btn-sm btn-success" onclick="insertentry()"><span class="fa fa-pencil"> </span > &nbsp; Add</button ></td > ';
+                html += '</tr>';
                 $.each(comps, function (key, item) {
 
                     html += '<tr "> ';
                     html += ' <td>' + count + '</td>';
                     html += ' <td>' + item.name + '</td>';
+                    html += ' <td>' + item.debit + '</td>';
+                    html += ' <td>' + item.credit + '</td>';
+                    html += ' <td>' + item.balance + '</td>';
                     html += ' <td><a target="_blank" href="/Admin/EditLA/?id=' + item.id + '" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a> | <a target="_blank" href="/Admin/DetailsLA/?id=' + item.id + '" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Details</a> </td>';
                     html += ' </tr>';
                     count++;
@@ -59,6 +145,7 @@
             }
         });
     }
+	    
 
 </script>
 
