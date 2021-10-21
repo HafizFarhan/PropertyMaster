@@ -13,95 +13,28 @@
                 <p class="card-category" id="det"></p>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="form-group">
-                        <label for="datetime">Date Time</label>
-                        <input type="text" class="form-control" id="datetime" />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="form-group">
-                        <label for="details">Details</label>
-                        <input type="text" class="form-control" id="details" />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="form-group">
-                        <label for="amount">Saleable Amount</label>
-                        <input type="text" class="form-control" id="amount" />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                            <button type="button" class="btn btn-primary btn-xs" id="btnUpdate" onclick="CreateAR();">Add Payable Amount</button>
-                </div>
-            </div>
-        </div>
+         
     </div>
 
 <table id="acountTbl" class="table table-striped table-bordered" style="width:100%">
     <thead>
         <tr>
+            <th>Sr. No</th>
             <th>Date</th>
             <th>Details</th>
-            <th>Amount</th>
-            <th></th>
-        </tr>
-        <tr>
-            <th></th>
-            <th><input type="text" class="form-control" id="amountAP" /></th>
-            <th><input type="text" class="form-control" id="detailsAP" /></th>
-            <th>
-                <button type="button" class="btn btn-primary btn-xs " id="btnUpdate" onclick="CreateAP();">Add Payment</button>
-
-            </th>
+            <th>Debit</th>
+            <th>Credit</th>
+            <th>Balance</th>
+			<th></th>
         </tr>
     </thead>
     <tbody id="acountTblDiv"></tbody>
 </table>
+
 <script type="text/javascript">
     window.onload = function () {
-        loadProjects();
         loadLA();
-        loadLA_AR();
-        LA_APList();
     };
-
-    
-
-    function loadProjects() {
-        $.ajax({
-            url: "/Admin/ProjectsList",
-            type: "GET",
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            success: function (objs) {
-                var html = '';
-                $.each(objs, function (key, item) {
-
-                    html += '<option style="text-align:right"  value="' + item.id + '"> ' + item.name + '</option>';
-                });
-                debugger;
-                $('#projId').append(html);
-            },
-            error: function (errormessage) {
-                alert(errormessage.responseText);
-            }
-        });
-    }
 
     function loadLA() {
         $.ajax({
@@ -110,10 +43,10 @@
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
-                debugger;
                 $("#id").val(result.id);
                 document.getElementById("title").innerHTML=result.name;
                 document.getElementById("det").innerHTML=result.details;
+				loadLAAccount();
             },
             error: function (errormessage) {
                 alert(errormessage.responseText);
@@ -121,6 +54,100 @@
         });
     }
 
+	function loadLAAccount() {
+        var landAcqId = getUrlParameter('id');
+        $.ajax({
+            url: "/Admin/LAAccountList",
+            type: "GET",
+            data: { landAcqId: landAcqId},
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (comps) {
+                var html = '',count=1;
+				var Db = 0, Cr = 0;
+                $('#ly').html('');
+                html += '<tr>';
+                html += '<td>0</td>';
+                html += '<td> <input type="date" id="datetime" class="form-control"/></td>';
+                html += '<td> <input type="text" id="details" class="form-control"/></td>';
+				html += '<td> <input type="number" min="0" value="0" id="debit" class="form-control"/></td>';
+				html += '<td> <input type="number" min="0" value="0" id="credit" class="form-control"/></td>';
+				html += '<td> - </td>';
+                html += '<td> <button type="button" class="btn btn-sm btn-success" onclick="insertentry()"><span class="fa fa-pencil"> </span > &nbsp; Add</button ></td > ';
+                html += '</tr>';
+                $.each(comps, function (key, item) {
+
+                    html += '<tr "> ';
+                    html += ' <td>' + count + '</td>';
+                    html += ' <td>' + cleanDate(item.datetime) + '</td>';
+                    html += ' <td>' + item.details + '</td>';
+                    html += ' <td>' + item.debit + '</td>';
+                    html += ' <td>' + item.credit + '</td>';
+                    html += ' <td>' + item.balance + '</td>';
+                    html += ' <td><a target="_blank" href="/Admin/EditLAAccount/?id=' + item.id + '" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>  </td>';
+                    html += ' </tr>';
+                    count++;
+                });
+                $('#acountTblDiv').html(html);
+               // $('#acountTbl').DataTable();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+	function validateEntry() {
+        var isValid = true;
+
+		if ($('#datetime').val().trim() == "") {
+            $('#datetime').css('border-color', 'Red');
+            isValid = false;
+        }
+		if ($('#debit').val().trim() == "") {
+            $('#debit').css('border-color', 'Red');
+            isValid = false;
+        }
+		if ($('#credit').val().trim() == "") {
+            $('#credit').css('border-color', 'Red');
+            isValid = false;
+        }
+		if ($('#details').val().trim() == "") {
+            $('#details').css('border-color', 'Red');
+            isValid = false;
+        }
+        return isValid;
+    }
+	function insertentry() {
+        var res = validateEntry();
+        if (res == false) {
+            return false;
+        }
+
+        var obj = {
+            landAcqId : getUrlParameter('id'),
+            details: $('#details').val(),
+            datetime: $('#datetime').val(),
+            debit: $('#debit').val(),
+            credit: $('#credit').val(),
+        };
+        $.ajax({
+            url: "/Admin/CreateLandAcqAccount",
+            data: JSON.stringify(obj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                alert("Record is updated.");
+                loadLAAccount();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+	function cleanDate(x) {
+        return new Date(Number(x.replace("/Date(", '').replace(")/", ''))).toLocaleString();
+    }
     function loadLA_AR() {
         $.ajax({
             url: "/Admin/GetbyIDLA_ARs/" + getUrlParameter('id'),
@@ -213,18 +240,7 @@
         });
     }
 
-    function validate() {
-        var isValid = true;
-        if ($('#details').val().trim() == "") {
-            $('#details').css('border-color', 'Red');
-            isValid = false;
-        }
-        if ($('#amount').val().trim() == "") {
-            $('#amount').css('border-color', 'Red');
-            isValid = false;
-        }
-        return isValid;
-    }
+    
 </script>
 
 

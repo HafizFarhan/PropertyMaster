@@ -19,9 +19,7 @@
         <tr>
             <th>Sr. No</th>
             <th>Name</th>
-			<th>Debit</th>
-			<th>Credit</th>
-			<th>Balance</th>
+            <th>Details</th>
             <th></th>
         </tr>
     </thead>
@@ -61,20 +59,7 @@
             $('#details').css('border-color', 'Red');
             isValid = false;
         }
-        if ($('#debit').val().trim() == "") {
-            $('#debit').css('border-color', 'Red');
-            isValid = false;
-        }
-		if ($('#credit').val().trim() == "") {
-            $('#debit').css('border-color', 'Red');
-            isValid = false;
-        }
-
-        //if ($('#debit').val().trim() == "" || $('#credit').val().trim() == "") {
-        //    $('#debit').css('border-color', 'Red');
-        //    isValid = false;
-        //}
-
+        
         return isValid;
     }
 	function insertentry() {
@@ -85,9 +70,7 @@
 
         var obj = {
             projId :document.getElementById("projId").value,
-            name: $('#details').val(),
-            debit: $('#debit').val(),
-            credit: $('#credit').val()
+            name: $('#details').val()
         };
         $.ajax({
             url: "/Admin/CreateLandAcq",
@@ -119,10 +102,8 @@
                 html += '<tr>';
                 html += '<td>0</td>';
                 //html += '<td> <input type="date" id="datetime" class="form-control"/></td>';
-                html += '<td> <input type="text" id="details" class="form-control"/></td>';
-                html += '<td> <input type="number" id="debit"  value="0" class="form-control"/></td>';
-                html += '<td> <input type="number" id="credit"  value="0" class="form-control"/></td>';
-                html += '<td> - </td>';
+                html += '<td> <input type="text" id="name" class="form-control"/></td>';
+				html += '<td> <input type="text" id="details" class="form-control"/></td>';
                 html += '<td> <button type="button" class="btn btn-sm btn-success" onclick="insertentry()"><span class="fa fa-pencil"> </span > &nbsp; Add</button ></td > ';
                 html += '</tr>';
                 $.each(comps, function (key, item) {
@@ -130,9 +111,7 @@
                     html += '<tr "> ';
                     html += ' <td>' + count + '</td>';
                     html += ' <td>' + item.name + '</td>';
-                    html += ' <td>' + item.debit + '</td>';
-                    html += ' <td>' + item.credit + '</td>';
-                    html += ' <td>' + item.balance + '</td>';
+                    html += ' <td>' + item.details + '</td>';
                     html += ' <td><a target="_blank" href="/Admin/EditLA/?id=' + item.id + '" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a> | <a target="_blank" href="/Admin/DetailsLA/?id=' + item.id + '" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Details</a> </td>';
                     html += ' </tr>';
                     count++;
