@@ -1,0 +1,150 @@
+﻿
+@{
+    ViewBag.Title = "DetailsExpenseSheet";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card-header card-header-primary">
+                <input type="hidden" class="form-control" id="id" />
+                <h2 class="card-title" id="title">Expense Sheet</h2>
+                <p class="card-category" id="det"></p>
+            </div>
+        </div>
+         
+    </div>
+
+<table id="acountTbl" class="table table-striped table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th>Sr. No</th>
+            <th>Date</th>
+            <th>Details</th>
+            <th>Debit</th>
+            <th>Balance</th>
+			<th></th>
+        </tr>
+    </thead>
+    <tbody id="acountTblDiv"></tbody>
+</table>
+
+<script type="text/javascript">
+    window.onload = function () {
+        loadExpenseSheet();
+    };
+
+    function loadExpenseSheet() {
+        $.ajax({
+            url: "/Admin/GetbyIDExpenseSheet/" + getUrlParameter('id'),
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                $("#id").val(result.id);
+                document.getElementById("title").innerHTML=result.name;
+                document.getElementById("det").innerHTML=result.details;
+				loadExpenseSheetAccount();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+	function loadExpenseSheetAccount() {
+        var landAcqId = getUrlParameter('id');
+        $.ajax({
+            url: "/Admin/ExpenseSheetAccountList",
+            type: "GET",
+            data: { landAcqId: landAcqId},
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (comps) {
+                var html = '',count=1;
+				var Db = 0, Cr = 0;
+                $('#ly').html('');
+                html += '<tr>';
+                html += '<td>0</td>';
+                html += '<td> <input type="date" id="datetime" class="form-control"/></td>';
+                html += '<td> <input type="text" id="details" class="form-control"/></td>';
+				html += '<td> <input type="number" min="0" value="0" id="debit" class="form-control"/></td>';
+				html += '<td> - </td>';
+                html += '<td> <button type="button" class="btn btn-sm btn-success" onclick="insertentry()"><span class="fa fa-pencil"> </span > &nbsp; Add</button ></td > ';
+                html += '</tr>';
+                $.each(comps, function (key, item) {
+
+                    html += '<tr "> ';
+                    html += ' <td>' + count + '</td>';
+                    html += ' <td>' + cleanDate(item.datetime) + '</td>';
+                    html += ' <td>' + item.details + '</td>';
+                    html += ' <td>' + item.debit + '</td>';
+                    html += ' <td>' + item.balance + '</td>';
+                    html += ' <td><a target="_blank" href="/Admin/EditExpenseSheetAccount/?id=' + item.id + '" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>  </td>';
+                    html += ' </tr>';
+                    count++;
+                });
+                $('#acountTblDiv').html(html);
+               // $('#acountTbl').DataTable();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+	function validateEntry() {
+        var isValid = true;
+
+		if ($('#datetime').val().trim() == "") {
+            $('#datetime').css('border-color', 'Red');
+            isValid = false;
+        }
+		if ($('#debit').val().trim() == "") {
+            $('#debit').css('border-color', 'Red');
+            isValid = false;
+        }
+		if ($('#details').val().trim() == "") {
+            $('#details').css('border-color', 'Red');
+            isValid = false;
+        }
+        return isValid;
+    }
+	function insertentry() {
+        var res = validateEntry();
+        if (res == false) {
+            return false;
+        }
+
+        var obj = {
+            landAcqId : getUrlParameter('id'),
+            details: $('#details').val(),
+            datetime: $('#datetime').val(),
+            debit: $('#debit').val()
+        };
+		console.log(obj)
+        $.ajax({
+            url: "/Admin/CreateExpenseSheetAccount",
+            data: JSON.stringify(obj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                alert("Record is updated.");
+                loadExpenseSheetAccount();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+	function cleanDate(x) {
+        return new Date(Number(x.replace("/Date(", '').replace(")/", ''))).toLocaleString();
+    }
+   
+    
+
+    
+</script>
+
+
+
+

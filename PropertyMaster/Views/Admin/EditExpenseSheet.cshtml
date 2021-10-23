@@ -1,13 +1,13 @@
 ﻿
 @{
-    ViewBag.Title = "EditLA";
+    ViewBag.Title = "EditExpenseSheet";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 <div class="row">
     <div class="col-md-8">
         <div class="card">
             <div class="card-header card-header-primary">
-                <h4 class="card-title">Edit LA</h4>
+                <h4 class="card-title">Edit ExpenseSheet</h4>
                 @*<p class="card-category">Complete your profile</p>*@
             </div>
             <div class="card-body">
@@ -70,7 +70,7 @@
 
     function getbyID(id) {
         $.ajax({
-            url: "/Admin/GetbyIDLA/" + id,
+            url: "/Admin/GetbyIDExpenseSheet/" + id,
             typr: "GET",
             contentType: "application/json;charset=UTF-8",
             dataType: "json",
@@ -107,13 +107,13 @@
             datetime: $('#datetime').val()
         };
         $.ajax({
-            url: "/Admin/UpdateLA",
+            url: "/Admin/UpdateExpenseSheet",
             data: JSON.stringify(obj),
             type: "POST",
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
-                window.location.href = '/Admin/LandAcquisition/';
+                window.location.href = '/Admin/ExpenseSheet/';
 
             },
             error: function (errormessage) {
