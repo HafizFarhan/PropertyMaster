@@ -12,12 +12,18 @@ namespace PropertyMaster.DAL
         public DbSet<Project> Projects { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<LandAcquisition> LandAcquisitions { get; set; }
+        public DbSet<LandAcquisitionAccount> LandAcquisitionsAccount { get; set; }
         public DbSet<Plot> Plots { get; set; }
         public DbSet<PlotEntry> PlotEntries { get; set; }
         public DbSet<PlotSale> PlotSales { get; set; }
         public DbSet<LandAcqAP> LandAcqAP { get; set; }
         public DbSet<LandAcqAR> LandAcqAR { get; set; }
+
+        public DbSet<ExpenseSheet> ExpenseSheet { get; set; }
+        public DbSet<ExpenseSheetAccount> ExpenseSheetAccount { get; set; }
+
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<ExpenseEntry> ExpenseEntries { get; set; }
+
     }
 }

@@ -1,14 +1,14 @@
 ﻿
 @{
-    ViewBag.Title = "LandAcquisition";
+    ViewBag.Title = "ExpenseSheet";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Land Acquisition-LA Panel</h2>
+<h2>Expense Sheet Panel</h2>
 <div class="row">
 
     <div class="col-md-6">
-		<select id="projId" style="height:55px;" class="form-control" onchange="loadLA()">  </select>
+		<select id="projId" style="height:55px;" class="form-control" onchange="loadExpenseSheet()">  </select>
     </div>
     
 </div>
@@ -43,7 +43,7 @@
                     html += '<option   value="' + item.id + '"> ' + item.name + '</option>';
                 });
                 $('#projId').append(html);
-				loadLA();
+				loadExpenseSheet();
             },
             error: function (errormessage) {
                 alert(errormessage.responseText);
@@ -72,24 +72,24 @@
             details: $('#details').val()
         };
         $.ajax({
-            url: "/Admin/CreateLandAcq",
+            url: "/Admin/CreateExpenseSheet",
             data: JSON.stringify(obj),
             type: "POST",
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
                 alert("Record is updated.");
-                loadLA();
+                loadExpenseSheet();
             },
             error: function (errormessage) {
                 alert(errormessage.responseText);
             }
         });
     }
-    function loadLA() {
+    function loadExpenseSheet() {
         var projId =document.getElementById("projId").value;
         $.ajax({
-            url: "/Admin/LAList",
+            url: "/Admin/ExpenseSheetList",
             type: "GET",
             data: { projId: projId},
             contentType: "application/json;charset=utf-8",
@@ -111,7 +111,7 @@
                     html += ' <td>' + count + '</td>';
                     html += ' <td>' + item.name + '</td>';
                     html += ' <td>' + item.details + '</td>';
-                    html += ' <td><a target="_blank" href="/Admin/EditLA/?id=' + item.id + '" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a> | <a target="_blank" href="/Admin/DetailsLA/?id=' + item.id + '" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Details</a> </td>';
+                    html += ' <td><a target="_blank" href="/Admin/EditExpenseSheet/?id=' + item.id + '" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a> | <a target="_blank" href="/Admin/DetailsExpenseSheet/?id=' + item.id + '" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Details</a> </td>';
                     html += ' </tr>';
                     count++;
                 });

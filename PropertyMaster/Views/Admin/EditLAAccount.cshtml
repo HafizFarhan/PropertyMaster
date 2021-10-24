@@ -7,25 +7,33 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-header card-header-primary">
-                <h4 class="card-title">Edit LA</h4>
+                <h4 class="card-title">Edit LA Accounts</h4>
                 @*<p class="card-category">Complete your profile</p>*@
             </div>
             <div class="card-body">
 
                 <div class="form-group">
                     <input type="hidden" class="form-control" id="id" />
-                    <input type="hidden" class="form-control" id="projId" />
-                    <input type="hidden" class="form-control" id="datetime" />
+                    <input type="hidden" class="form-control" id="landAcqId" />
+                </div>
+				<div class="form-group">
+                    <label for="datetime">Date</label>
+                    <input type="date" id="datetime" class="form-control"/>
                 </div>
 
                 <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" />
+                    <label for="name">Details</label>
+                    <input type="text" class="form-control" id="details" />
                 </div>
 
                 <div class="form-group">
-                    <label for="details">Details</label>
-                    <textarea type="text" class="form-control" id="details" cols="4">  </textarea>
+                    <label for="debit">Debit</label>
+                    <input type="number" class="form-control" id="debit" cols="4">  </input>
+
+                </div>
+				 <div class="form-group">
+                    <label for="credit">Credit</label>
+                    <input type="number" class="form-control" id="credit" cols="4">  </input>
 
                 </div>
 
@@ -70,18 +78,19 @@
 
     function getbyID(id) {
         $.ajax({
-            url: "/Admin/GetbyIDLA/" + id,
+            url: "/Admin/GetbyIDLAAccount/" + id,
             typr: "GET",
             contentType: "application/json;charset=UTF-8",
             dataType: "json",
             success: function (result) {
                 $('#id').val(result.id);
-                $('#projId').val(result.projId);
-                $('#name').val(result.name);
-                $('#details').html(result.details);
-
-                $('#deleted').val(result.deleted);
-                $('#datetime').val(result.datetime);
+                $('#landAcqId').val(result.landAcqId);
+                $('#debit').val(result.debit);
+                $('#credit').val(result.credit);
+				console.log(cleanDate(result.datetime));
+                $('#details').val(result.details);
+				document.getElementById('datetime').value=cleanDate(result.datetime);
+                //$('#datetime').html(cleanDate(result.datetime));
                 //$('#updatedAt').val(result.updatedAt);
 
             },
@@ -92,7 +101,9 @@
         return false;
     }
 
-
+	function cleanDate(x) {
+        return new Date(Number(x.replace("/Date(", '').replace(")/", ''))).toLocaleString();
+    }
 
     function Update() {
 
@@ -101,19 +112,20 @@
 
         var obj = {
             id: $('#id').val(),
-            projId: $('#projId').val(),
-            name: $('#name').val(),
+            landAcqId: $('#landAcqId').val(),
             details: $('#details').val(),
+            debit: $('#debit').val(),
+            credit: $('#credit').val(),
             datetime: $('#datetime').val()
         };
         $.ajax({
-            url: "/Admin/UpdateLA",
+            url: "/Admin/UpdateLAAccount",
             data: JSON.stringify(obj),
             type: "POST",
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
-                window.location.href = '/Admin/LandAcquisition/';
+                window.location.href = '/Admin/DetailsLA/?id=' + obj.landAcqId;
 
             },
             error: function (errormessage) {
@@ -123,8 +135,16 @@
     }
     function validate() {
         var isValid = true;
-        if ($('#name').val().trim() == "") {
-            $('#name').css('border-color', 'Red');
+        if ($('#details').val().trim() == "") {
+            $('#details').css('border-color', 'Red');
+            isValid = false;
+        }
+		if ($('#debit').val().trim() == "") {
+            $('#debit').css('border-color', 'Red');
+            isValid = false;
+        }
+		if ($('#credit').val().trim() == "") {
+            $('#credit').css('border-color', 'Red');
             isValid = false;
         }
         return isValid;

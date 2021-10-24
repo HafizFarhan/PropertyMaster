@@ -6,7 +6,7 @@ using System.Web;
 
 namespace PropertyMaster.Models
 {
-    public class LandAcquisition
+    public class ExpenseSheet
     {
         public int id { get; set; }
         public int projId { get; set; }

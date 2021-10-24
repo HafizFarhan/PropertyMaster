@@ -87,7 +87,19 @@ namespace PropertyMaster.Controllers
             context.SaveChanges();
             return Json(org, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult CreateLandAcqAccount(LandAcquisitionAccount obj)
+        {
+            obj.datetime = DateTime.Now;
+            obj.updatedAt = DateTime.Now;
+            //account.CreatedBy = Global.UserID;
+            //obj.deleted = true;
+            context.LandAcquisitionsAccount.Add(obj);
+            context.SaveChanges();
 
+            return Json(obj, JsonRequestBehavior.AllowGet);
+            //return View(obj);
+            //return RedirectToAction("LandAcquisition", "Admin",new { id=obj.projId});
+        }
         #endregion
 
         #region Projects
@@ -162,6 +174,174 @@ namespace PropertyMaster.Controllers
 
         #endregion
 
+        #region ExpenseSheet
+        public ActionResult ExpenseSheet()
+        {
+            return View();
+        }
+
+        public ActionResult DetailsExpenseSheet()
+        {
+            return View();
+        }
+
+
+        public JsonResult CreateExpenseSheet(ExpenseSheet obj)
+        {
+            obj.datetime = DateTime.Now;
+            obj.updatedAt = DateTime.Now;
+            //account.CreatedBy = Global.UserID;
+            //obj.deleted = true;
+            context.ExpenseSheet.Add(obj);
+            context.SaveChanges();
+
+            return Json(obj, JsonRequestBehavior.AllowGet);
+            //return View(obj);
+            //return RedirectToAction("LandAcquisition", "Admin",new { id=obj.projId});
+        }
+
+        public ActionResult EditExpenseSheet()
+        {
+            return View();
+        }
+        public JsonResult ExpenseSheetList(int projId)
+        {
+            var la = context.ExpenseSheet.Where(p => p.projId == projId).ToList();
+
+            return Json(la, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetbyIDExpenseSheet(int ID)
+        {
+            var obj = context.ExpenseSheet.Where(m => m.id == ID).FirstOrDefault();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult UpdateExpenseSheet(ExpenseSheet obj)
+        {
+            var org = context.ExpenseSheet.Where(m => m.id == obj.id).FirstOrDefault();
+            if (org != null)
+            {
+                org.name = obj.name;
+                org.details = obj.details;
+                //org.datetime = DateTime.Now;
+                obj = org;
+                obj.updatedAt = DateTime.Now;
+                context.Entry(org).CurrentValues.SetValues(obj);
+            }
+            context.SaveChanges();
+
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult DeleteExpenseSheet(int ID)
+        {
+            var org = context.ExpenseSheet.Where(m => m.id == ID).FirstOrDefault();
+            if (org != null)
+            {
+                var account = org;
+                account.deleted = true;
+                context.Entry(org).CurrentValues.SetValues(account);
+            }
+            context.SaveChanges();
+            return Json(org, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult ExpenseSheetAccountList(int landAcqId)
+        {
+
+            List<ExpenseSheetAccount> accounts = context.ExpenseSheetAccount.Where(m => m.landAcqId == landAcqId).OrderBy(m => m.datetime).ToList();
+            double balance = 0;
+            for (int i = 0; i < accounts.Count; i++)
+            {
+                balance = accounts[i].balance = balance + accounts[i].debit;
+            }
+            return Json(accounts, JsonRequestBehavior.AllowGet);
+
+        }
+        public ActionResult EditExpenseSheetAccount()
+        {
+            return View();
+        }
+
+        public JsonResult UpdateExpenseSheetAccount(ExpenseSheetAccount obj)
+        {
+            var org = context.ExpenseSheetAccount.Where(m => m.id == obj.id).FirstOrDefault();
+            if (org != null)
+            {
+                org.details = obj.details;
+                org.debit = obj.debit;
+                //org.datetime = DateTime.Now;
+                obj = org;
+                obj.updatedAt = DateTime.Now;
+                context.Entry(org).CurrentValues.SetValues(obj);
+            }
+            context.SaveChanges();
+
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetbyIDExpenseSheetAccount(int ID)
+        {
+            var obj = context.ExpenseSheetAccount.Where(m => m.id == ID).FirstOrDefault();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult CreateExpenseSheetAccount(ExpenseSheetAccount obj)
+        {
+            obj.datetime = DateTime.Now;
+            obj.updatedAt = DateTime.Now;
+            //account.CreatedBy = Global.UserID;
+            //obj.deleted = true;
+            context.ExpenseSheetAccount.Add(obj);
+            context.SaveChanges();
+
+            return Json(obj, JsonRequestBehavior.AllowGet);
+            //return View(obj);
+            //return RedirectToAction("LandAcquisition", "Admin",new { id=obj.projId});
+        }
+        #endregion
+
+        #region Land Acquisition Account
+        public JsonResult LAAccountList(int landAcqId)
+        {
+
+            List<LandAcquisitionAccount> accounts = context.LandAcquisitionsAccount.Where(m => m.landAcqId== landAcqId).OrderBy(m => m.datetime).ToList();
+            double balance = 0;
+            for (int i = 0; i < accounts.Count; i++)
+            {
+                balance = accounts[i].balance = balance + accounts[i].debit - accounts[i].credit;
+            }
+            return Json(accounts, JsonRequestBehavior.AllowGet);
+
+            //var la = context.LandAcquisitionsAccount.Where(p => p.landAcqId == landAcqId).ToList();
+
+            //return Json(la, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult EditLAAccount()
+        {
+            return View();
+        }
+
+        public JsonResult UpdateLAAccount(LandAcquisitionAccount obj)
+        {
+            var org = context.LandAcquisitionsAccount.Where(m => m.id == obj.id).FirstOrDefault();
+            if (org != null)
+            {
+                org.details = obj.details;
+                org.debit = obj.debit;
+                org.credit = obj.credit;
+                //org.datetime = DateTime.Now;
+                obj = org;
+                obj.updatedAt = DateTime.Now;
+                context.Entry(org).CurrentValues.SetValues(obj);
+            }
+            context.SaveChanges();
+
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetbyIDLAAccount(int ID)
+        {
+            var obj = context.LandAcquisitionsAccount.Where(m => m.id == ID).FirstOrDefault();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
 
         #region Land Acquisition
         public ActionResult LandAcquisition()
@@ -182,6 +362,7 @@ namespace PropertyMaster.Controllers
         public JsonResult CreateLandAcq(LandAcquisition obj)
         {
             obj.datetime = DateTime.Now;
+            obj.updatedAt = DateTime.Now;
             //account.CreatedBy = Global.UserID;
             //obj.deleted = true;
             context.LandAcquisitions.Add(obj);
@@ -212,13 +393,15 @@ namespace PropertyMaster.Controllers
             var org = context.LandAcquisitions.Where(m => m.id == obj.id).FirstOrDefault();
             if (org != null)
             {
+                org.name = obj.name;
+                org.details= obj.details;
+                //org.datetime = DateTime.Now;
                 obj = org;
-                obj.datetime = org.datetime;
+                obj.updatedAt = DateTime.Now;
                 context.Entry(org).CurrentValues.SetValues(obj);
             }
             context.SaveChanges();
-
-            //return RedirectToAction("Projects", "Admin");
+            
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
         public JsonResult DeleteLA(int ID)
