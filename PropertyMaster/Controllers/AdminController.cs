@@ -523,19 +523,47 @@ namespace PropertyMaster.Controllers
         {
             return View();
         }
+        public ActionResult PlotDetails()
+        {
+            return View();
+        }
+        public ActionResult ViewPlotEntry()
+        {
+            return View();
+        }
+        public JsonResult InsertPlotEntry(PlotEntry obj)
+        {
+            obj.createdAt = DateTime.Now;
+            obj.createdby = Global.UserID;
+            obj.updatedAt = DateTime.Now;
+            context.PlotEntries.Add(obj);
+            context.SaveChanges();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult LoadPlotEntries(int id)
+        {
+            List<PlotEntry> accounts = context.PlotEntries.Where(m => m.plotId == id).OrderBy(m => m.datetime).ToList();
+            double balance = 0;
+            for (int i = 0; i < accounts.Count; i++)
+            {
+                balance = accounts[i].balance = balance + accounts[i].debit - accounts[i].credit;
+            }
+            return Json(accounts, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult CreatePlot()
         {
             return View();
         }
-        [HttpPost]
-        public ActionResult CreatePlot(Plot obj)
+        
+        public JsonResult CreatePlotForProject(Plot obj)
         {
             obj.datetime = DateTime.Now;
             //account.CreatedBy = Global.UserID;
             //obj.deleted = true;
             context.Plots.Add(obj);
             context.SaveChanges();
-            return RedirectToAction("Plots", "Admin");
+            return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult EditPlot()
@@ -544,13 +572,52 @@ namespace PropertyMaster.Controllers
         }
         public JsonResult PlotList(int projId)
         {
-            var la = context.Plots.Where(p => p.projId == projId).ToList();
-
-            return Json(la, JsonRequestBehavior.AllowGet);
+            //var la = context.Plots.Where(p => p.projId == projId).ToList();
+            var list = (from p in context.Plots 
+                              join ps in context.PlotSales on p.id equals ps.plotId
+                              join c in context.Users on ps.clientId equals c.id
+                        where p.projId== projId
+                              select new
+                              {
+                                  plotid = p.id,
+                                  sa = p.saleableAmount,
+                                  details = p.details,
+                                  saledAmount = ps.saleAmount,
+                                  client=c.name
+                              }).ToList();
+            return Json(list, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetbyIDPlot(int ID)
+        public JsonResult GetbyIDPlot(int ID,bool alldetails=false)
         {
-            var obj = context.Plots.Where(m => m.id == ID).FirstOrDefault();
+            if(alldetails)
+            {
+                Plot plot = context.Plots.Where(m => m.id == ID).FirstOrDefault();
+                PlotSale plotSale = context.PlotSales.Where(m => m.plotId == ID).FirstOrDefault();
+                if(plotSale!=null)
+                {
+                    plotSale.client = context.Users.Where(m => m.id == plotSale.clientId).FirstOrDefault();
+                    plotSale.dealer = context.Users.Where(m => m.id == plotSale.dealerId).FirstOrDefault();
+                }
+               else
+                {
+                    plotSale = new PlotSale();
+                    plotSale.client = new User();
+                    plotSale.dealer = new User();
+                }
+                plotSale.plot = plot;
+                return Json(plotSale, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+              var obj = context.Plots.Where(m => m.id == ID).FirstOrDefault();
+              return Json(obj, JsonRequestBehavior.AllowGet);
+            }
+            
+        }
+
+        public JsonResult GetbyIDPlotSale(int id)
+        {
+            var obj = context.PlotSales.Where(m => m.plotId == id).FirstOrDefault();
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
         public JsonResult UpdatePlot(Plot obj)

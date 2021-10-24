@@ -4,13 +4,15 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-
 <div class="row">
-    <div class="col-md-6">
-        <h2>Plots Panel</h2>
+    <div class="col-md-2">
+        <h2>Plots</h2>
     </div>
-    <div class="col-md-6 pull-right">
-        @Html.ActionLink("Create Plot", "CreatePlot", null, new { @class = "btn btn-primry" })
+    <div class="col-md-4">
+        <select id="projId" class="form-control" onchange="loadLA()">  </select>
+    </div>
+    <div class="col-md-6">
+        <a href="CreatePlot" class="btn btn-primary pull-right"><span class="fa fa-plus"></span>&nbsp;Create Plot</a>
     </div>
 </div>
 <table id="acountTbl" class="table table-striped table-bordered" style="width:100%">
@@ -19,51 +21,78 @@
             <th>Sr. No</th>
             <th>Details</th>
             <th>Saleable Amount</th>
+            <th>Client Name</th>
+            <th>Saled Amount</th>
             <th></th>
         </tr>
     </thead>
     <tbody id="acountTblDiv"></tbody>
 </table>
 <script>
-    window.onload = function () { loadLA(); };
+
+
+    window.onload = function () { loadProjects(); };
     //function getUrlParameter(name) {
     //    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     //    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
     //    var results = regex.exec(location.search);
     //    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     //};
-    function loadLA() {
 
-        var projId =getUserTypeValue(getUrlParameter('id'));
+    function loadProjects() {
         $.ajax({
-            url: "/Admin/PlotList",
+            url: "/Admin/ProjectsList",
             type: "GET",
-            data: { projId: projId},
             contentType: "application/json;charset=utf-8",
             dataType: "json",
-            success: function (comps) {
-                var html = '',count=1;
-                $.each(comps, function (key, item) {
+            success: function (objs) {
+                var html = '<option value="0"> Select Project</option>';
+                $.each(objs, function (key, item) {
 
-                    html += '<tr "> ';
-                    html += ' <td>' + count + '</td>';
-                    html += ' <td>' + item.details + '</td>';
-                    html += ' <td>' + item.saleableamount + '</td>';
-                    html += ' <td><a target="_blank" href="/Admin/EditPlot/?id=' + item.id + '" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a> </td>';
-                    html += ' </tr>';
-                    count++;
+                    html += '<option  value="' + item.id + '"> ' + item.name + '</option>';
                 });
-                $('#acountTblDiv').html(html);
-               // $('#acountTbl').DataTable();
+                debugger;
+                $('#projId').append(html);
             },
             error: function (errormessage) {
                 alert(errormessage.responseText);
             }
         });
     }
+    function loadLA() {
 
+        var projId = $('#projId').val();
+        $.ajax({
+            url: "/Admin/PlotList",
+            type: "GET",
+            data: { projId: projId },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (comps) {
+                var html = '', count = 1;
+                $.each(comps, function (key, item) {
 
-    
+                    html += '<tr "> ';
+                    html += ' <td>' + count + '</td>';
+                    html += ' <td> <a href="/Admin/PlotDetails?id=' + item.plotid + '"> <span class="fa fa-eye"></span> &nbsp;' + item.details + '</a></td>';
+                    html += ' <td>' + item.sa + '</td>';
+                    html += ' <td>' + item.client + '</td>';
+                    html += ' <td>' + item.saledAmount + '</td>';
+                    html += '<td>'
+                        + '<a href="/Admin/EditPlot?id=' + item.plotid + '" class="btn btn-primary pull-right" ><span class="fa fa-pencil"></span>&nbsp;</a >'
+                        + '<a href="/Admin/Files?id=' + item.plotid + '" class="btn btn-primary pull-right" ><span class="fa fa-file"></span>&nbsp;</a >'
+                        + '</td>';
+                    html += ' </tr>';
+                    count++;
+                });
+                $('#acountTblDiv').html(html);
+                // $('#acountTbl').DataTable();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
 
 </script>
 

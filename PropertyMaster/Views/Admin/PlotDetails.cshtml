@@ -1,0 +1,263 @@
+﻿
+@{
+    ViewBag.Title = "PlotDetails";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Plot Details</h2>
+    </div>
+    <div class="col-md-6">
+        <a href="#" class="btn btn-success pull-right"> <span class="fa fa-print"></span> &nbsp; Print</a> &nbsp;
+    </div>
+    <div class="col-md-12">
+        <hr />
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="details">Details</label>
+                <input type="text" class="form-control" id="details" disabled />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="saleableAmount">Saleable Amount</label>
+                <input type="text" class="form-control" id="saleableAmount" disabled />
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <h3> Plot Details</h3>
+                <div class="form-group">
+                    <label for="samount">Saled Amount</label>
+                    <input type="text" class="form-control" id="samount" disabled />
+                </div>
+                <div class="form-group">
+                    <label for="cp">Commission Percent</label>
+                    <input type="text" class="form-control" id="cp" disabled />
+                </div>
+                <div class="form-group">
+                    <label for="sdate">Saled Date</label>
+                    <input type="text" class="form-control" id="sdate" disabled />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h3> Client Details</h3>
+                <div class="form-group">
+                    <label for="cname">Name</label>
+                    <input type="text" class="form-control" id="cname" disabled />
+                </div>
+                <div class="form-group">
+                    <label for="cnic">NIC</label>
+                    <input type="text" class="form-control" id="cnic" disabled />
+                </div>
+                <div class="form-group">
+                    <label for="ccell">Cell #</label>
+                    <input type="text" class="form-control" id="ccell" disabled />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h3> Dealer Details</h3>
+                <div class="row">
+                    <div class="form-group">
+                            <select id="dealers" class="form-control" onchange="">  </select>   
+                    </div>
+                    <div class="form-group">
+                        <label for="dname">Name</label>
+                        <input type="text" class="form-control" id="dname" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="dcell">Cell #</label>
+                        <input type="text" class="form-control" id="dcell" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="dcell">Commision Percent</label>
+                        <input type="text" class="form-control" id="dcell" disabled />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table id="acountTbl" class="table table-striped table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th>Sr. #</th>
+            <th>Date & Time</th>
+            <th>Details</th>
+            <th>Debit</th>
+            <th>Credit</th>
+            <th>Balence</th>
+        </tr>
+    </thead>
+    <tbody id="acountTblDiv"></tbody>
+</table>
+<script>
+    window.onload = function () {
+        LoadPayments();
+        GetbyIDPlot(getUrlParameter('id'));
+        loadUsers('Customer');
+        loadUsers('Dealers');
+    };
+    function cleanDate(x) {
+        return new Date(Number(x.replace("/Date(", '').replace(")/", ''))).toLocaleString();
+    }
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    };
+    function LoadPayments() {
+
+        var id = getUrlParameter('id');
+        $.ajax({
+            url: "/Admin/LoadPlotEntries",
+            type: "GET",
+            data: { id: id },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (list) {
+                var html = '', count = 1;
+                var Db = 0, Cr = 0;
+                html += '<tr>';
+                html += '<td>0</td>';
+                html += '<td> <input type="date" id="datetime" class="form-control"/></td>';
+                html += '<td> <input type="text" id="details"class="form-control"/></td>';
+                html += '<td> <input type="number" id="debit"  value="0" class="form-control"/></td>';
+                html += '<td> <input type="number" id="credit"  value="0" class="form-control"/></td>';
+                html += '<td> <button type="button" class="btn btn-sm btn-success" onclick="insertentry()"><span class="fa fa-pencil"> </span > &nbsp; Add</button ></td > ';
+                html += '</tr>';
+                $.each(list, function (key, item) {
+                    html += '<tr>';
+                    html += ' <td>' + count + '</td>';
+                    html += ' <td> <a target="_blank" href="/Accounts/ViewPlotEntry/?ID=' + item.id + '" > <span class="fa fa-eye"></span> &nbsp;' + cleanDate(item.datetime) + ' </a> </td>';
+                    html += ' <td>' + item.details + '</td>';
+                    html += ' <td>' + item.debit + '</td>';
+                    html += ' <td>' + item.credit + '</td>';
+                    html += '<td> ' + item.balance + '</td>';
+                    html += '<td> - </td>';
+                    html += ' </tr>';
+                    count++;
+                });
+                $('#acountTblDiv').html(html);
+                $('#acountTbl').DataTable();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    function loadUsers(type) {
+        $.ajax({
+            url: "/Admin/UsersList",
+            type: "GET",
+            data: { type: type },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (list) {
+                var html = '';
+                $.each(list, function (key, item) {
+                    html += '<option value="' + item.id + '"> ' + item.name + ' - ' + item.nic + '</option>';
+                });
+                if (type =='Customer')
+                    $('#clients').html(html);
+                if (type == 'Dealers')
+                    $('#dealers').html(html);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function GetbyIDPlot(id) {
+        $.ajax({
+            url: "/Admin/GetbyIDPlot",
+            typr: "GET",
+            data: { id: id, alldetails:true},
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                //plot details
+                $('#details').val(result.plot.details);
+                $('#saleableAmount').val(result.plot.saleableAmount);
+
+                //sale details
+                $('#samount').val(result.saleAmount);
+                $('#cp').html(result.commissionPercent);
+                $('#sdate').html(cleanDate(result.dateTime));
+
+                //client details
+                $('#cname').html(result.client.name);
+                $('#cnic').html(result.client.nic);
+                $('#ccell').html(result.client.cell);
+
+                //dealer details
+                $('#dname').html(result.client.name);
+                $('#dnic').html(result.client.nic);
+                $('#dcell').html(result.client.cell);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        return false;
+    }
+
+    function cleanDate(x) {
+        return new Date(Number(x.replace("/Date(", '').replace(")/", ''))).toLocaleString();
+    }
+    function insertentry() {
+        var res = validateEntry();
+        if (res == false) {
+            return false;
+        }
+
+        var obj = {
+            plotId: getUrlParameter('ID'),
+            datetime: $('#datetime').val(),
+            details: $('#details').val(),
+            debit: $('#debit').val(),
+            credit: $('#credit').val()
+        };
+        $.ajax({
+            url: "/Accounts/InsertPlotEntry",
+            data: JSON.stringify(obj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                alert("Record is updated.");
+                LoadPayments();
+                //window.location.href = '/Accounts/GeneralLadger?ID='+getUrlParameter('ID');
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function validateEntry() {
+        var isValid = true;
+
+        if ($('#datetime').val().trim() == "") {
+            $('#datetime').css('border-color', 'Red');
+            isValid = false;
+        }
+
+        //if ($('#debit').val().trim() == "" || $('#credit').val().trim() == "") {
+        //    $('#debit').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+
+        return isValid;
+    }
+
+</script>
+

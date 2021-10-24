@@ -5,7 +5,7 @@
 }
 
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
         <div class="card">
             <div class="card-header card-header-primary">
                 <h4 class="card-title">Edit Plot</h4>
@@ -40,30 +40,15 @@
 
 
                 <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <button type="button" class="btn btn-primary  pull-right" id="btnUpdate" onclick="Update();">Update</button>
+                    <div class="col-md-12">
+                        <a href="Plots" class="btn btn-primary pull-left"><span class="fa fa-backward"></span>&nbsp; Back</a>
+                        <button type="button" class="btn btn-primary pull-right" id="btnUpdate" onclick="Update();"><span class="fa fa-refresh"></span>&nbsp; Update</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card card-profile">
-            <div class="card-avatar">
-                <a href="javascript:;">
-                    <img class="img" src="~/assets/img/avator.jpg" />
-                </a>
-            </div>
-            <div class="card-body">
-                <h6 class="card-category text-gray"><span id="design"></span></h6>
-                <h4 class="card-title"><span id="profile"></span></h4>
-                <p class="card-description">
-                    Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
-                </p>
-                <a href="javascript:;" class="btn btn-primary btn-round ">Follow</a>
-            </div>
-        </div>
-    </div>
+    
 </div>
 <script type="text/javascript">
     window.onload = function () {
