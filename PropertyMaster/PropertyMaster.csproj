@@ -139,13 +139,16 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CustomSchedule.cs" />
-    <Compile Include="Models\Expences.cs" />
+    <Compile Include="Models\Expense.cs" />
+    <Compile Include="Models\ExpenseEntry.cs" />
+    <Compile Include="Models\Global.cs" />
     <Compile Include="Models\Inventory.cs" />
     <Compile Include="Models\Invoice.cs" />
     <Compile Include="Models\LandAcqAR.cs" />
     <Compile Include="Models\LandAcquisition.cs" />
     <Compile Include="Models\LandAcqAP.cs" />
     <Compile Include="Models\Plot.cs" />
+    <Compile Include="Models\PlotEntry.cs" />
     <Compile Include="Models\PlotSale.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\User.cs" />
@@ -159,6 +162,51 @@
     <Content Include="assets\css\material-dashboard-rtl.css" />
     <Content Include="assets\css\material-dashboard.css" />
     <Content Include="assets\css\material-dashboard.min.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\css\dataTables.bootstrap.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\css\dataTables.bootstrap.min.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\css\dataTables.bootstrap4.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\css\dataTables.bootstrap4.min.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\css\dataTables.bootstrap5.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\css\dataTables.bootstrap5.min.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\css\dataTables.bulma.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\css\dataTables.bulma.min.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\css\dataTables.dataTables.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\css\dataTables.dataTables.min.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\css\dataTables.foundation.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\css\dataTables.foundation.min.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\css\dataTables.jqueryui.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\css\dataTables.jqueryui.min.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\css\dataTables.semanticui.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\css\dataTables.semanticui.min.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\css\jquery.dataTables.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\css\jquery.dataTables.min.css" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\images\sort_asc.png" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\images\sort_asc_disabled.png" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\images\sort_both.png" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\images\sort_desc.png" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\images\sort_desc_disabled.png" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\js\dataTables.bootstrap.js" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\js\dataTables.bootstrap.min.js" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\js\dataTables.bootstrap4.js" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\js\dataTables.bootstrap4.min.js" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\js\dataTables.bootstrap5.js" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\js\dataTables.bootstrap5.min.js" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\js\dataTables.bulma.js" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\js\dataTables.bulma.min.js" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\js\dataTables.dataTables.js" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\js\dataTables.dataTables.min.js" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\js\dataTables.foundation.js" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\js\dataTables.foundation.min.js" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\js\dataTables.jqueryui.js" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\js\dataTables.jqueryui.min.js" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\js\dataTables.semanticui.js" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\js\dataTables.semanticui.min.js" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\js\jquery.dataTables.js" />
+    <Content Include="assets\DataTables\DataTables-1.11.3\js\jquery.dataTables.min.js" />
+    <Content Include="assets\DataTables\datatables.css" />
+    <Content Include="assets\DataTables\datatables.js" />
+    <Content Include="assets\DataTables\datatables.min.css" />
+    <Content Include="assets\DataTables\datatables.min.js" />
     <Content Include="assets\demo\demo.css" />
     <Content Include="assets\demo\demo.js" />
     <Content Include="assets\fontawesome\attribution.js" />
@@ -2239,9 +2287,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>49788</DevelopmentServerPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:49788/</IISUrl>
+          <IISUrl>http://localhost:51609/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

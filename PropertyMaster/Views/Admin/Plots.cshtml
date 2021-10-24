@@ -21,6 +21,8 @@
             <th>Sr. No</th>
             <th>Details</th>
             <th>Saleable Amount</th>
+            <th>Client Name</th>
+            <th>Saled Amount</th>
             <th></th>
         </tr>
     </thead>
@@ -72,11 +74,13 @@
 
                     html += '<tr "> ';
                     html += ' <td>' + count + '</td>';
-                    html += ' <td> <a href="/Admin/PlotDetails?id=' + item.id + '"> <span class="fa fa-eye"></span> &nbsp;' + item.details + '</a></td>';
-                    html += ' <td>' + item.saleableAmount + '</td>';
+                    html += ' <td> <a href="/Admin/PlotDetails?id=' + item.plotid + '"> <span class="fa fa-eye"></span> &nbsp;' + item.details + '</a></td>';
+                    html += ' <td>' + item.sa + '</td>';
+                    html += ' <td>' + item.client + '</td>';
+                    html += ' <td>' + item.saledAmount + '</td>';
                     html += '<td>'
-                        + '<a href="/Admin/EditPlot?id=' + item.id + '" class="btn btn-primary pull-right" ><span class="fa fa-pencil"></span>&nbsp;</a >'
-                        + '<a href="/Admin/Files?id=' + item.id + '" class="btn btn-primary pull-right" ><span class="fa fa-file"></span>&nbsp;</a >'
+                        + '<a href="/Admin/EditPlot?id=' + item.plotid + '" class="btn btn-primary pull-right" ><span class="fa fa-pencil"></span>&nbsp;</a >'
+                        + '<a href="/Admin/Files?id=' + item.plotid + '" class="btn btn-primary pull-right" ><span class="fa fa-file"></span>&nbsp;</a >'
                         + '</td>';
                     html += ' </tr>';
                     count++;

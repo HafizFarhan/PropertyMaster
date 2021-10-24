@@ -17,5 +17,7 @@ namespace PropertyMaster.DAL
         public DbSet<PlotSale> PlotSales { get; set; }
         public DbSet<LandAcqAP> LandAcqAP { get; set; }
         public DbSet<LandAcqAR> LandAcqAR { get; set; }
+        public DbSet<Expense> Expenses { get; set; }
+        public DbSet<ExpenseEntry> ExpenseEntries { get; set; }
     }
 }

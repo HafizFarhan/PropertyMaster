@@ -60,14 +60,10 @@
                 </div>
             </div>
             <div class="col-md-4">
+                <h3> Dealer Details</h3>
                 <div class="row">
-                    <h3> Dealer Details</h3>
-                    <div class="col-md-10">
-                        <select id="dealers" class="form-control" onchange="">
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <button class="btn btn-primary btn-sm" onclick="addNewDealer()">    </button>
+                    <div class="form-group">
+                            <select id="dealers" class="form-control" onchange="">  </select>   
                     </div>
                     <div class="form-group">
                         <label for="dname">Name</label>
@@ -102,7 +98,7 @@
 </table>
 <script>
     window.onload = function () {
-        loadGeneralLadger();
+        LoadPayments();
         GetbyIDPlot(getUrlParameter('id'));
         loadUsers('Customer');
         loadUsers('Dealers');
@@ -118,9 +114,9 @@
     };
     function LoadPayments() {
 
-        var id = getUrlParameter('ID');
+        var id = getUrlParameter('id');
         $.ajax({
-            url: "/Accounts/LoadPlotEntries",
+            url: "/Admin/LoadPlotEntries",
             type: "GET",
             data: { id: id },
             contentType: "application/json;charset=utf-8",
@@ -181,9 +177,9 @@
 
     function GetbyIDPlot(id) {
         $.ajax({
-            url: "/Admin/GetbyIDPlot/",
+            url: "/Admin/GetbyIDPlot",
             typr: "GET",
-            data: { id: id, alldetails=true },
+            data: { id: id, alldetails:true},
             contentType: "application/json;charset=UTF-8",
             dataType: "json",
             success: function (result) {
