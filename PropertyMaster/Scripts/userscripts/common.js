@@ -1,12 +1,7 @@
-﻿function TimeTrickToReadableDatetime(date) {
+﻿
 
-    return (date.replace('/Date(', '').replace(')/', ''));
-    //if (date != null || date != null) {
-    //   return (date.replace('/Date(', '')).replace(')/', '');
-    //    //tmp = new Date(tmp);
-    //}
-    //else
-    //    return 'Date is not defined'
+function cleanDate(x) {
+    return new Date(Number(x.replace("/Date(", '').replace(")/", ''))).toLocaleString();
 }
 
 function getUrlParameter(name) {

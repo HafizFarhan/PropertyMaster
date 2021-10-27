@@ -244,10 +244,10 @@ namespace PropertyMaster.Controllers
             return Json(org, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult ExpenseSheetAccountList(int landAcqId)
+        public JsonResult ExpenseSheetAccountList(int expId)
         {
 
-            List<ExpenseSheetAccount> accounts = context.ExpenseSheetAccount.Where(m => m.landAcqId == landAcqId).OrderBy(m => m.datetime).ToList();
+            List<ExpenseSheetAccount> accounts = context.ExpenseSheetAccount.Where(m => m.expId == expId).OrderBy(m => m.datetime).ToList();
             double balance = 0;
             for (int i = 0; i < accounts.Count; i++)
             {

@@ -3712,19 +3712,19 @@ tbody.collapse.show {
   border: 0;
 }
 
-.dropdown-item:hover,
-.dropdown-item:focus {
-  color: #16181b;
-  text-decoration: none;
-  background-color: #f8f9fa;
-}
+    .dropdown-item:hover,
+    .dropdown-item:focus {
+        color: #16181b;
+        text-decoration: none;
+        background-color: #4caf50;
+    }
 
-.dropdown-item.active,
-.dropdown-item:active {
-  color: #ffffff;
-  text-decoration: none;
-  background-color: #2196f3;
-}
+    .dropdown-item.active,
+    .dropdown-item:active {
+        color: #ffffff;
+        text-decoration: none;
+        background-color: #4caf50;
+    }
 
 .dropdown-item.disabled,
 .dropdown-item:disabled {
@@ -9468,7 +9468,7 @@ a.text-dark:focus {
 
 .btn.btn-primary:hover {
   color: #fff;
-  background-color: #64ad6a;
+  background-color: #073e76;
   border-color: #701c7e;
 }
 
@@ -9476,7 +9476,7 @@ a.text-dark:focus {
 .btn.btn-primary.focus,
 .btn.btn-primary:hover {
   color: #fff;
-  background-color: #64ad6a;
+  background-color: #073e76;
   border-color: #701c7e;
 }
 
@@ -9485,7 +9485,7 @@ a.text-dark:focus {
 .open>.btn.btn-primary.dropdown-toggle,
 .show>.btn.btn-primary.dropdown-toggle {
   color: #fff;
-  background-color: #64ad6a;
+  background-color: #073e76;
   border-color: #701c7e;
   box-shadow: 0 2px 2px 0 rgba(156, 39, 176, 0.14), 0 3px 1px -2px rgba(156, 39, 176, 0.2), 0 1px 5px 0 rgba(156, 39, 176, 0.12);
 }
@@ -9503,7 +9503,7 @@ a.text-dark:focus {
 .show>.btn.btn-primary.dropdown-toggle:focus,
 .show>.btn.btn-primary.dropdown-toggle.focus {
   color: #fff;
-  background-color: #64ad6a;
+  background-color: #073e76;
   border-color: #3f1048;
 }
 
@@ -9513,7 +9513,7 @@ a.text-dark:focus {
 }
 
 .open>.btn.btn-primary.dropdown-toggle.bmd-btn-icon:hover {
-  background-color: #64ad6a;
+  background-color: #073e76;
 }
 
 .btn.btn-primary.disabled:focus,
@@ -15570,7 +15570,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 }
 
 .main-panel>.content {
-  margin-top: 70px;
+  margin-top: 30px;
   padding: 30px 15px;
   min-height: calc(100vh - 123px);
 }
@@ -15888,7 +15888,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 
 .fixed-plugin .btn.btn-primary:hover {
   color: #fff;
-  background-color: #64ad6a;
+  background-color: #073e76;
   border-color: #701c7e;
 }
 
@@ -15896,7 +15896,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 .fixed-plugin .btn.btn-primary.focus,
 .fixed-plugin .btn.btn-primary:hover {
   color: #fff;
-  background-color: #64ad6a;
+  background-color: #073e76;
   border-color: #701c7e;
 }
 
@@ -15905,7 +15905,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 .open>.fixed-plugin .btn.btn-primary.dropdown-toggle,
 .show>.fixed-plugin .btn.btn-primary.dropdown-toggle {
   color: #fff;
-  background-color: #64ad6a;
+  background-color: #073e76;
   border-color: #701c7e;
   box-shadow: 0 2px 2px 0 rgba(156, 39, 176, 0.14), 0 3px 1px -2px rgba(156, 39, 176, 0.2), 0 1px 5px 0 rgba(156, 39, 176, 0.12);
 }
@@ -15923,7 +15923,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 .show>.fixed-plugin .btn.btn-primary.dropdown-toggle:focus,
 .show>.fixed-plugin .btn.btn-primary.dropdown-toggle.focus {
   color: #fff;
-  background-color: #64ad6a;
+  background-color: #073e76;
   border-color: #3f1048;
 }
 
@@ -15933,7 +15933,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 }
 
 .open>.fixed-plugin .btn.btn-primary.dropdown-toggle.bmd-btn-icon:hover {
-  background-color: #64ad6a;
+  background-color: #073e76;
 }
 
 .fixed-plugin .btn.btn-primary.disabled:focus,
@@ -17517,7 +17517,7 @@ html[dir="rtl"] .form-check .form-check-sign .check:before {
 .card.bg-primary,
 .card.card-rotate.bg-primary .front,
 .card.card-rotate.bg-primary .back {
-  background: linear-gradient(60deg, #000000, #000000);
+    background: linear-gradient(60deg, #4caf50, #fafafa);
 }
 
 .card .card-header-info .card-icon,
@@ -17526,7 +17526,7 @@ html[dir="rtl"] .form-check .form-check-sign .check:before {
 .card.bg-info,
 .card.card-rotate.bg-info .front,
 .card.card-rotate.bg-info .back {
-  background: linear-gradient(60deg, #26c6da, #00acc1);
+    background: linear-gradient( 60deg, #4caf50, #fafafa);
 }
 
 .card .card-header-success .card-icon,
@@ -17535,7 +17535,7 @@ html[dir="rtl"] .form-check .form-check-sign .check:before {
 .card.bg-success,
 .card.card-rotate.bg-success .front,
 .card.card-rotate.bg-success .back {
-  background: linear-gradient(60deg, #66bb6a, #43a047);
+    background: linear-gradient(60deg, #4caf50, #fafafa);
 }
 
 .card .card-header-warning .card-icon,

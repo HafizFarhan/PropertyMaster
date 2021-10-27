@@ -52,11 +52,11 @@
     }
 
 	function loadExpenseSheetAccount() {
-        var landAcqId = getUrlParameter('id');
+        var expId = getUrlParameter('id');
         $.ajax({
             url: "/Admin/ExpenseSheetAccountList",
             type: "GET",
-            data: { landAcqId: landAcqId},
+            data: { expId: expId},
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (comps) {
@@ -136,9 +136,7 @@
             }
         });
     }
-	function cleanDate(x) {
-        return new Date(Number(x.replace("/Date(", '').replace(")/", ''))).toLocaleString();
-    }
+	
    
     
 

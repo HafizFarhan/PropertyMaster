@@ -141,12 +141,15 @@
     <Compile Include="Models\CustomSchedule.cs" />
     <Compile Include="Models\Expense.cs" />
     <Compile Include="Models\ExpenseEntry.cs" />
+    <Compile Include="Models\ExpenseSheet.cs" />
+    <Compile Include="Models\ExpenseSheetAccount.cs" />
     <Compile Include="Models\Global.cs" />
     <Compile Include="Models\Inventory.cs" />
     <Compile Include="Models\Invoice.cs" />
     <Compile Include="Models\LandAcqAR.cs" />
     <Compile Include="Models\LandAcquisition.cs" />
     <Compile Include="Models\LandAcqAP.cs" />
+    <Compile Include="Models\LandAcquisitionAccount.cs" />
     <Compile Include="Models\Plot.cs" />
     <Compile Include="Models\PlotEntry.cs" />
     <Compile Include="Models\PlotSale.cs" />
@@ -2249,6 +2252,11 @@
     <Content Include="Views\Admin\CreateUser.cshtml" />
     <Content Include="Views\Admin\EditUser.cshtml" />
     <Content Include="Views\Admin\PlotDetails.cshtml" />
+    <Content Include="Views\Admin\DetailsExpenseSheet.cshtml" />
+    <Content Include="Views\Admin\EditExpenseSheet.cshtml" />
+    <Content Include="Views\Admin\EditExpenseSheetAccount.cshtml" />
+    <Content Include="Views\Admin\EditLAAccount.cshtml" />
+    <Content Include="Views\Admin\ExpenseSheet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

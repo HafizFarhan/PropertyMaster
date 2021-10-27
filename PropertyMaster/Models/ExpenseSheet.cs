@@ -16,8 +16,11 @@ namespace PropertyMaster.Models
         //public double credit { get; set; }
         public bool deleted{ get; set; }
         public DateTime datetime { get; set; }
+        public DateTime createdAt { get; set; }
+        public int createdBy { get; set; }
         public DateTime updatedAt { get; set; }
-        
+        public int updatedBy { get; set; }
+
         //[NotMapped]
         //public double balance { get; set; }
     }

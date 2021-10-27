@@ -1,0 +1,56 @@
+﻿@model AccountsApp.Models.Login
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm())
+{
+
+    @Html.AntiForgeryToken()
+
+<div class="row">
+    <div id="login" class="col-md-4">
+        <span style="padding-top:40%">
+            <img src="~/images/Logo.png" />
+        </span>
+        <form id="login-form" class="form" action="" method="post">
+            <h3 class="text-center text-info" style="color:white">Login</h3>
+            <p style="color:red">  @Session["msg"]</p>
+            <div class="col-md-12" style="margin-top:3%">
+                <div class="col-md-3">
+                    <label for="username" class="text-info"  style="color:white;padding-top:5%">Username:</label>
+                </div>
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+
+                </div>
+            </div>
+            <div class="col-md-12" style="margin-top:3%">
+                <div class="col-md-3">
+                    <label for="username" class="text-info"  style="color:white;padding-top:1%">Password:</label>
+                </div>
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @type = "password", @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="col-md-12 pull-right" style="margin-top:3%">
+                @*<label for="remember-me" class="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br>*@
+                <input type="submit" class="btn btn-success btn-md pull-right" style="background-color: #0c445a;margin-right:5%" value="Login">
+            </div>
+            @*<div id="register-link" class="text-right">
+            <a href="#" class="text-info">Register here</a>
+        </div>*@
+        </form>
+    </div>
+    <div class="col-md-8" >
+        <img class="img"  src="~/images/bg.png" />
+        @*<center>
+            <h3><i>Donated by</i> </h3><h1><span style="color:white">Abu Muslim</span></h1>
+        </center>*@
+    </div>
+</div>
+
+
+}
